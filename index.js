@@ -35,6 +35,7 @@ async function run() {
         app.get('/toys', async(req, res)=>{
             const cursor = toysCollection.find();
             const result = await cursor.toArray();
+            console.log('toys get Success')
             res.send(result);     
         })
 
