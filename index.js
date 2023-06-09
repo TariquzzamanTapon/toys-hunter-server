@@ -76,8 +76,24 @@ async function run() {
             const query = {_id : new ObjectId(id)}
             const result = await toysCollection.deleteOne(query);
             res.send(result);
+        })
 
-            
+
+        // DATA_UPDATE_INTEGRATE
+        app.put('/toys/:id', async(req, res)=>{
+            const id = req.params.id;
+            const filter = {_id : new ObjectId(id)};
+            const updatetoy = req.body;
+            const option = {upsert: true};
+            const toy = {
+                $set : {
+                    price : updatetoy.price,
+                    available_quantity :updatetoy.available_quantity,
+                    detail_description : updatetoy.detail_description
+                }
+            }
+            const result = await toysCollection.updateOne(filter, toy, option);
+            res.send(result)
         })
         
 
