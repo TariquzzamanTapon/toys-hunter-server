@@ -41,6 +41,21 @@ async function run() {
             res.send(result);
         })
 
+
+        // ASCENDING_IMPLEMENT
+        app.get('/asstoys', async(req, res)=>{
+            const cursor = toysCollection.find().sort({price : 1});
+            const result = await cursor.toArray()
+            res.send(result);
+        })
+
+        // DESCENDING_IMPLEMENT
+        app.get('/destoys', async(req, res)=>{
+            const cursor = toysCollection.find().sort({price : -1});
+            const result = await cursor.toArray()
+            res.send(result);
+        })
+
         // SPECIFIC TOY GET
         app.get('/toys/:id', async (req, res) => {
             const id = req.params.id;
@@ -60,14 +75,14 @@ async function run() {
 
        
         // EMAIL_QUERY 
-        // app.get('/toys', async(req, res)=>{
-        //     let query = {};
-        //     if(req.query?.email){
-        //         query = {email : req.query.email}
-        //     }
-        //     const result = await toysCollection.find(query).toArray();
-        //     res.send(result);
-        // })
+        app.get('/toys', async(req, res)=>{
+            let query = {};
+            if(req.query?.email){
+                query = {email : req.query.email}
+            }
+            const result = await toysCollection.find(query).sort().toArray();
+            res.send(result);
+        })
 
 
         // TOYS_DELETE_ITEM
