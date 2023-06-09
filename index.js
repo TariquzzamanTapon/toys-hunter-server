@@ -1,7 +1,7 @@
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
-const cors = require('cors')
-require('dotenv').config()
+const cors = require('cors');
+require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -34,32 +34,57 @@ async function run() {
 
 
         // ALL TOYS GET HERE   
-        app.get('/toys', async(req, res)=>{
+        app.get('/toys', async (req, res) => {
             const cursor = toysCollection.find();
             const result = await cursor.toArray();
             console.log('toys get Success')
-            res.send(result);     
+            res.send(result);
         })
 
         // SPECIFIC TOY GET
-        app.get('/toys/:id', async(req, res)=>{
+        app.get('/toys/:id', async (req, res) => {
             const id = req.params.id;
-            const query = {_id: new ObjectId(id)}
+            const query = { _id: new ObjectId(id) }
             const result = await toysCollection.findOne(query);
             res.send(result);
         })
 
 
         // TOYS NEW DATA ADD 
-        app.post('/toys', async(req, res)=>{
+        app.post('/toys', async (req, res) => {
             const toy = req.body;
             const result = await toysCollection.insertOne(toy);
             res.send(result);
         })
 
 
+       
+        // EMAIL_QUERY 
+        // app.get('/toys', async(req, res)=>{
+        //     let query = {};
+        //     if(req.query?.email){
+        //         query = {email : req.query.email}
+        //     }
+        //     const result = await toysCollection.find(query).toArray();
+        //     res.send(result);
+        // })
 
+
+        // TOYS_DELETE_ITEM
+        app.delete('/toys/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id : new ObjectId(id)}
+            const result = await toysCollection.deleteOne(query);
+            res.send(result);
+
+            
+        })
         
+
+
+
+
+
 
 
 
