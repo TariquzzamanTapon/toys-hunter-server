@@ -37,12 +37,12 @@ async function run() {
         app.get('/toys', async (req, res) => {
             const cursor = toysCollection.find();
             const result = await cursor.toArray();
-            console.log('toys get Success')
+            // console.log('toys get Success')
             res.send(result);
         })
 
 
-        // ASCENDING_IMPLEMENT
+        //ASCENDING_IMPLEMENT
         app.get('/asstoys', async(req, res)=>{
             const cursor = toysCollection.find().sort({price : 1});
             const result = await cursor.toArray()
@@ -52,7 +52,7 @@ async function run() {
         // DESCENDING_IMPLEMENT
         app.get('/destoys', async(req, res)=>{
             const cursor = toysCollection.find().sort({price : -1});
-            const result = await cursor.toArray()
+            const result = await cursor.toArray();
             res.send(result);
         })
 
