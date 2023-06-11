@@ -23,21 +23,29 @@ const client = new MongoClient(uri, {
         version: ServerApiVersion.v1,
         strict: true,
         deprecationErrors: true,
-    }
+    },
+    useNewUrlParser : true,
+    useUnifiedTopology : true,
+    maxPoolSize : 10, 
 });
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
+        client.connect((err)=>{
+            if(err){
+                console.error(err);
+                return;
+            }
+        })
 
         const toysCollection = client.db('toysDB').collection('toys');
 
 
         // ALL TOYS GET HERE   
         app.get('/toys', async (req, res) => {
-            const cursor = toysCollection.find();
+            const cursor = toysCollection.find().limit(20);
             const result = await cursor.toArray();
-            // console.log('toys get Success')
             res.send(result);
         })
 
@@ -45,7 +53,7 @@ async function run() {
         //ASCENDING_IMPLEMENT
         app.get('/asstoys', async(req, res)=>{
             const cursor = toysCollection.find().sort({price : 1});
-            const result = await cursor.toArray()
+            const result = await cursor.toArray();
             res.send(result);
         })
 
@@ -73,16 +81,6 @@ async function run() {
         })
 
 
-       
-        // EMAIL_QUERY 
-        app.get('/toys', async(req, res)=>{
-            let query = {};
-            if(req.query?.email){
-                query = {email : req.query.email}
-            }
-            const result = await toysCollection.find(query).sort().toArray();
-            res.send(result);
-        })
 
 
         // TOYS_DELETE_ITEM
